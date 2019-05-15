@@ -148,6 +148,7 @@
 #define HA_ILLUMINANCEMEASUREMENT_CLUSTER_ID    (0x0400)
 #define HA_DEFAULT_CLUSTER_ID    (0xffff)
 #define HA_OTA_CLUSTER_ID    (0x0019)
+#define HA_TEMPMEASUREMENT_CLUSTER_ID        (0x0402)
 #define HA_TIME_CLUSTER_ID    (0x000a)
 
 
@@ -157,6 +158,8 @@
 /* Endpoints */
 #define ROUTER_ZDO_ENDPOINT    (0)
 #define ROUTER_APPLICATION_ENDPOINT    (1)
+#define ROUTER_SERVER_ENDPOINT     (2)
+
 /****************************************************************************/
 /***        Type Definitions                                              ***/
 /****************************************************************************/

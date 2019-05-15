@@ -447,7 +447,9 @@ PUBLIC void APP_vOobcSetRunning(void)
  ****************************************************************************/
 PRIVATE void vAppHandleAfEvent( BDB_tsZpsAfEvent *psZpsAfEvent)
 {
-    if (psZpsAfEvent->u8EndPoint == ROUTER_APPLICATION_ENDPOINT)
+    if (psZpsAfEvent->u8EndPoint == ROUTER_APPLICATION_ENDPOINT
+
+    		||  psZpsAfEvent->u8EndPoint == ROUTER_SERVER_ENDPOINT)
     {
         DBG_vPrintf(TRACE_APP, "Pass to ZCL\r\n");
         if ((psZpsAfEvent->sStackEvent.eType == ZPS_EVENT_APS_DATA_INDICATION) ||

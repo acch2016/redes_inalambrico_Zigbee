@@ -104,6 +104,7 @@ PRIVATE void APP_vZCL_DeviceSpecific_Init(void);
 /****************************************************************************/
 
 tsZHA_BaseDevice sBaseDevice;
+tsZHA_BaseDevice sBaseDeviceServerTemp;
 
 /****************************************************************************/
 /***        Local Variables                                               ***/
@@ -147,6 +148,15 @@ PUBLIC void APP_ZCL_vInitialise(void)
     if (eZCL_Status != E_ZCL_SUCCESS)
     {
             DBG_vPrintf(TRACE_ZCL, "Error: eZHA_RegisterBaseDeviceEndPoint: %02x\r\r\n", eZCL_Status);
+    }
+
+    /* Register TEMP EndPoint */
+    eZCL_Status =  eZHA_RegisterBaseDeviceEndPoint(ROUTER_SERVER_ENDPOINT,
+                                                              &APP_ZCL_cbEndpointCallback,
+                                                              &sBaseDeviceServerTemp);
+    if (eZCL_Status != E_ZCL_SUCCESS)
+    {
+              DBG_vPrintf(TRACE_ZCL, "Error: eZHA_RegisterBaseDeviceEndPoint(ServerTemp): %02x\r\n", eZCL_Status);
     }
 
     APP_vZCL_DeviceSpecific_Init();
@@ -215,6 +225,7 @@ PUBLIC void APP_cbTimerZclTick(void *pvParam)
     /* Wrap the Tick10ms counter and provide 100ms ticks to cluster */
     if (u32Tick10ms > 9)
     {
+    	sBaseDeviceServerTemp.sTemperatureMeasurementServerCluster.i16MeasuredValue = BOARD_GetTemperature();
         eZCL_Update100mS();
         u32Tick10ms = 0;
     }
@@ -601,6 +612,9 @@ PRIVATE void APP_vHandleClusterCustomCommands(tsZCL_CallBackEvent *psEvent)
                 eZHA_RegisterBaseDeviceEndPoint(ROUTER_APPLICATION_ENDPOINT,
                                                 &APP_ZCL_cbEndpointCallback,
                                                 &sBaseDevice);
+                eZHA_RegisterBaseDeviceEndPoint(ROUTER_SERVER_ENDPOINT,
+                                                &APP_ZCL_cbEndpointCallback,
+                                                &sBaseDeviceServerTemp);
             }
             #ifdef CLD_OTA
                 vAppInitOTA();
@@ -663,6 +677,14 @@ PRIVATE void APP_vZCL_DeviceSpecific_Init(void)
     FLib_MemCpy(sBaseDevice.sBasicServerCluster.au8ModelIdentifier, "BDB-Router", CLD_BAS_MODEL_ID_SIZE);
     FLib_MemCpy(sBaseDevice.sBasicServerCluster.au8DateCode, "20150212", CLD_BAS_DATE_SIZE);
     FLib_MemCpy(sBaseDevice.sBasicServerCluster.au8SWBuildID, "1000-0001", CLD_BAS_SW_BUILD_SIZE);
+
+    FLib_MemCpy(sBaseDeviceServerTemp.sBasicServerCluster.au8ManufacturerName, "NXP", CLD_BAS_MANUF_NAME_SIZE);
+    FLib_MemCpy(sBaseDeviceServerTemp.sBasicServerCluster.au8ModelIdentifier, "BDB-TMP", CLD_BAS_MODEL_ID_SIZE);
+    FLib_MemCpy(sBaseDeviceServerTemp.sBasicServerCluster.au8DateCode, "20190509", CLD_BAS_DATE_SIZE);
+    FLib_MemCpy(sBaseDeviceServerTemp.sBasicServerCluster.au8SWBuildID, "1000-0001", CLD_BAS_SW_BUILD_SIZE);
+    sBaseDeviceServerTemp.sTemperatureMeasurementServerCluster.i16MeasuredValue = 0;
+    sBaseDeviceServerTemp.sTemperatureMeasurementServerCluster.i16MinMeasuredValue = 0;
+    sBaseDeviceServerTemp.sTemperatureMeasurementServerCluster.i16MaxMeasuredValue = 0;
 }
 
 /****************************************************************************/

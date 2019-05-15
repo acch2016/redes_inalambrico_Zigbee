@@ -180,6 +180,8 @@ void main_task (uint32_t parameter)
         TMR_Init();
         /* Init Led module */
         LED_Init();
+        hardware_init();
+        BOARD_InitAdc();
         /* Initialize Keyboard (Switches) Module */
         KBD_Init(KBD_Callback);
 

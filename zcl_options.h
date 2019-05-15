@@ -61,7 +61,7 @@
 #define ZCL_MANUFACTURER_CODE                                0x1037
 
 /* Number of endpoints supported by this device */
-#define ZCL_NUMBER_OF_ENDPOINTS                              1
+#define ZCL_NUMBER_OF_ENDPOINTS                              2
 
 /* ZCL has all cooperative task */
 #define COOPERATIVE
@@ -109,6 +109,9 @@ enum
 
 #define CLD_ONOFF
 #define ONOFF_SERVER
+
+#define CLD_TEMPERATURE_MEASUREMENT
+#define TEMPERATURE_MEASUREMENT_SERVER
 
 #ifdef BUILD_OTA
 #define CLD_OTA
@@ -162,7 +165,13 @@ enum
 /* Add the following #define's to your zcl_options.h file to add optional   */
 /* attributes to the time cluster.                                          */
 /****************************************************************************/
-
+/****************************************************************************/
+/* Temperature Measurement Cluster - Optional Attributes */
+/* */
+/* Add the following #define's to your zcl_options.h file to add optional */
+/* attributes to the time cluster. */
+/****************************************************************************/
+#define CLD_TEMPMEAS_ATTR_TOLERANCE
 /****************************************************************************/
 /*             Basic Cluster - Optional Commands                            */
 /*                                                                          */
@@ -170,7 +179,13 @@ enum
 /* commands to the basic cluster.                                           */
 /****************************************************************************/
 #define CLD_BAS_CMD_RESET_TO_FACTORY_DEFAULTS
-
+/****************************************************************************/
+/* OnOff Cluster - Optional Commands */
+/* */
+/* Add the following #define's to your zcl_options.h file to add optional */
+/* commands to the OnOff cluster. */
+/****************************************************************************/
+#define CLD_ONOFF_CMD_OFF_WITH_EFFECT
 /****************************************************************************/
 /*             OTA Cluster - Optional Attributes                 */
 /*                                                                          */
